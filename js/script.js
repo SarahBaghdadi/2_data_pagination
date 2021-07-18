@@ -85,10 +85,11 @@ Builds new array called searchResults and calls showPage on searchResults.
 
 const search = document.querySelector('#search'); // Search input element
 const submit = document.querySelector('.student-search button'); // Search submit button
+let searchResults = [];
 
 function simpleSearch(searchInput, list) {
    clearHtml(studentList);
-   let searchResults = [];
+   searchResults = [];
    for (let i = 0; i < list.length; i++){
       let fullName = `${list[i].name.first} ${list[i].name.last}`;
       let searchParamaters = searchInput.value.length != 0 && fullName.toLowerCase().includes(searchInput.value.toLowerCase());
@@ -97,7 +98,6 @@ function simpleSearch(searchInput, list) {
       }
    }
    showPage(searchResults, 1);
-   addPagination(searchResults); 
    if (searchInput.value.length == 0) {
       showPage(data, 1);
    } else if (searchResults.length == 0 ) {
@@ -115,8 +115,12 @@ linkList.addEventListener('click', (e) => {
    if (e.target.type == 'button') {
       document.querySelector('button.active').className = '';
       e.target.className = 'active';
-      let list = data; // this line
-      showPage(list, e.target.textContent);
+      if (searchResults.length > 0){
+         showPage(searchResults, e.target.textContent);
+      } else {
+         showPage(data, e.target.textContent);
+      }
+
    }
 });
 
@@ -124,8 +128,14 @@ linkList.addEventListener('click', (e) => {
 submit.addEventListener('click', (e) => {
    e.preventDefault();
    simpleSearch(search, data);
+   addPagination(searchResults); 
  });
 
  search.addEventListener('keyup', () => {
    simpleSearch(search, data);
+   if (searchResults.length > 0) {
+      addPagination(searchResults); 
+   } else {
+      addPagination(data);
+   }
  });
