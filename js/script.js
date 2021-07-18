@@ -53,7 +53,9 @@ function addPagination(list) {
       </li>`;
       linkList.insertAdjacentHTML('beforeend', buttonContents);
    }
-   linkList.firstElementChild.firstElementChild.className = 'active';
+   if (buttonsQty > 0 ) {
+      linkList.firstElementChild.firstElementChild.className = 'active';
+   }
 }
 
 linkList.addEventListener('click', (e) => {
@@ -97,14 +99,17 @@ function simpleSearch(searchInput, list) {
       let fullName = `${list[i].name.first} ${list[i].name.last}`;
       let searchParamaters = searchInput.value.length != 0 && fullName.toLowerCase().includes(searchInput.value.toLowerCase());
       if (searchParamaters) {
-         // output new list
-         // list = newList;
          searchResults.push(list[i]);
       }
    }
    showPage(searchResults, 1);
    console.log(searchResults.length);
    addPagination(searchResults); 
+   if (searchInput.value.length == 0) {
+      showPage(data, 1);
+   } else if (searchResults.length == 0 ) {
+      studentList.insertAdjacentHTML('beforeend', `<p>No results found.</p>`);
+   } 
 }
 
 submit.addEventListener('click', (event) => {
