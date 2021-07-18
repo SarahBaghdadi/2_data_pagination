@@ -14,13 +14,22 @@ function clearHtml(element) {
 }
 
 
+// Add search bar
+let header = document.querySelector('.header');
+header.insertAdjacentHTML('beforeend', 
+`<label for="search" class="student-search">
+  <span>Search by name</span>
+  <input id="search" placeholder="Search by name...">
+  <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+</label>`);
+
+
 /*
 `showPage` function 
 Creates and appends HTML for paginated list of student information.
 @param list (array) The data array to be used.
 @param page (number) The current page number.
 */
-
 
 function showPage(list, page) {
    let startIndex = page * itemsPerPage - itemsPerPage;
@@ -66,35 +75,6 @@ function addPagination(list) {
    }
 }
 
-// Click event listener for pagination buttons.
-linkList.addEventListener('click', (e) => {
-   if (e.target.type == 'button') {
-      document.querySelector('button.active').className = '';
-      e.target.className = 'active';
-      let list = data; // this line
-      showPage(list, e.target.textContent);
-   }
-});
-
-// Call functions
-showPage(data, 1);
-addPagination(data);
-
-
-/*
-Search elements & functions.
-====================
-*/
-
-// Add search bar
-
-let header = document.querySelector('.header');
-header.insertAdjacentHTML('beforeend', 
-`<label for="search" class="student-search">
-  <span>Search by name</span>
-  <input id="search" placeholder="Search by name...">
-  <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
-</label>`);
 
 /* 
 `simpleSearch` function
@@ -124,6 +104,21 @@ function simpleSearch(searchInput, list) {
       studentList.insertAdjacentHTML('beforeend', `<p>No results found.</p>`);
    } 
 }
+
+
+// Call functions
+showPage(data, 1);
+addPagination(data);
+
+// Event listener for pagination buttons.
+linkList.addEventListener('click', (e) => {
+   if (e.target.type == 'button') {
+      document.querySelector('button.active').className = '';
+      e.target.className = 'active';
+      let list = data; // this line
+      showPage(list, e.target.textContent);
+   }
+});
 
 // Event listeners for search button and keyup events.
 submit.addEventListener('click', (event) => {
