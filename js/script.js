@@ -121,8 +121,8 @@ linkList.addEventListener('click', (e) => {
 });
 
 // Event listeners for search button and keyup events.
-submit.addEventListener('click', (event) => {
-   event.preventDefault();
+submit.addEventListener('click', (e) => {
+   e.preventDefault();
    simpleSearch(search, data);
  });
 
