@@ -103,7 +103,6 @@ function simpleSearch(searchInput, list) {
       }
    }
    showPage(searchResults, 1);
-   console.log(searchResults.length);
    addPagination(searchResults); 
    if (searchInput.value.length == 0) {
       showPage(data, 1);
