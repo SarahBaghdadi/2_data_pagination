@@ -10,7 +10,7 @@ Set global variables.
 
 let itemsPer = 9; // How many items per page to show.
 const studentList = document.querySelector('.student-list'); // Ul element containing student data in lis.
-const linkList = document.querySelector('.link-list'); //Ul element containing pagination buttons.
+const linkList = document.querySelector('.link-list'); // Ul element containing pagination buttons.
 
  /*
 `clearHtml` function
@@ -121,9 +121,9 @@ header.insertAdjacentHTML('beforeend',
 @param list The data array containing student information.
 */
 
- const search = document.querySelector('#search'); // search input element
- const submit = document.querySelector('.student-search button'); // search submit button
- 
+const search = document.querySelector('#search'); // Search input element
+const submit = document.querySelector('.student-search button'); // Search submit button
+
  function simpleSearch(searchInput, list) {
    clearHtml(studentList);
    for (let i = 0; i < list.length; i++){
@@ -131,9 +131,22 @@ header.insertAdjacentHTML('beforeend',
       let searchParamaters = (searchInput.value.length != 0 && fullName.toLowerCase().includes(searchInput.value.toLowerCase())) || searchInput.value.length == 0;
       if (searchParamaters) {
          renderListItem(list[i]);
-     } 
+      }
    }
  }
+
+ /* 
+`alertNoResults` function
+Renders message if no results.
+*/
+
+ function alertNoResults() {   
+   let resultsQty = document.querySelectorAll('li.student-item').length;
+   console.log(resultsQty);
+   if (resultsQty == 0 ) {
+      studentList.innerHTML = `<p>No results found.</p>`;
+   }
+}
    
  /* 
  event listener for search button click event
@@ -141,6 +154,7 @@ header.insertAdjacentHTML('beforeend',
  submit.addEventListener('click', (event) => {
    event.preventDefault();
    simpleSearch(search, data);
+   alertNoResults();
  });
  
  /* 
@@ -148,6 +162,7 @@ header.insertAdjacentHTML('beforeend',
  */
  search.addEventListener('keyup', () => {
    simpleSearch(search, data);
+   alertNoResults();
  });
 
 // Call functions
