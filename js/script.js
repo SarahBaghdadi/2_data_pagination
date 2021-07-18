@@ -82,6 +82,7 @@ header.insertAdjacentHTML('beforeend',
 
 /* 
 `simpleSearch` function
+Builds new array called searchResults and calls showPage on searchResults
 @param searchInput The search input element.
 @param list The data array containing student information.
 */
@@ -103,6 +104,7 @@ function simpleSearch(searchInput, list) {
    }
    showPage(searchResults, 1);
    console.log(searchResults.length);
+   addPagination(searchResults); 
 }
 
 submit.addEventListener('click', (event) => {
