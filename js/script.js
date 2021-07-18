@@ -16,6 +16,25 @@ Creates and appends the elements needed to display a page of students.
 @param list The data array containing student information.
 @param page The current page number.
 */
+function renderListItem(item) {
+   const picture = item.picture.large;
+   const firstName = item.name.first;
+   const lastName = item.name.last;
+   const email = item.email;
+   const dateJoined = item.registered.date; 
+   studentList.insertAdjacentHTML('beforeend',
+   `<li class="student-item cf">
+      <div class="student-details">
+      <img class="avatar" src="${picture}" alt="Profile Picture">
+      <h3>${firstName} ${lastName}</h3>
+      <span class="email">${email}</span>
+      </div>
+      <div class="joined-details">
+      <span class="date">Joined ${dateJoined}</span>
+      </div>
+   </li>`);
+}
+
 
 function showPage (list, page){
    let startIndex = page * itemsPer - itemsPer - 1;
@@ -23,22 +42,7 @@ function showPage (list, page){
    studentList.innerHTML = '';
    for (i=0; i < list.length; i++){
       if (i > startIndex && i < endIndex){
-         const picture = list[i].picture.large;
-         const firstName = list[i].name.first;
-         const lastName = list[i].name.last;
-         const email = list[i].email;
-         const dateJoined = list[i].registered.date; 
-         studentList.insertAdjacentHTML('beforeend',
-         `<li class="student-item cf">
-            <div class="student-details">
-            <img class="avatar" src="${picture}" alt="Profile Picture">
-            <h3>${firstName} ${lastName}</h3>
-            <span class="email">${email}</span>
-            </div>
-            <div class="joined-details">
-            <span class="date">Joined ${dateJoined}</span>
-            </div>
-         </li>`);
+         renderListItem(list[i]);
       }
    }
 }
@@ -76,9 +80,7 @@ Pagination event listener.
     }
  });
 
-// Call functions
-showPage(data, 1);
-addPagination(data);
+
 
 // Search bar 
 
@@ -103,25 +105,9 @@ header.insertAdjacentHTML('beforeend',
    studentList.innerHTML = '';
    for (let i = 0; i < list.length; i++){
       let fullName = `${list[i].name.first} ${list[i].name.last}`;
-      if (searchInput.value.length != 0 && fullName.toLowerCase().includes(searchInput.value.toLowerCase())) {
-         console.log('match');
-         const picture = list[i].picture.large;
-         const firstName = list[i].name.first;
-         const lastName = list[i].name.last;
-         const email = list[i].email;
-         const dateJoined = list[i].registered.date; 
-         studentList.insertAdjacentHTML('beforeend',
-         `<li class="student-item cf">
-            <div class="student-details">
-            <img class="avatar" src="${picture}" alt="Profile Picture">
-            <h3>${firstName} ${lastName}</h3>
-            <span class="email">${email}</span>
-            </div>
-            <div class="joined-details">
-            <span class="date">Joined ${dateJoined}</span>
-            </div>
-         </li>`);
-     }
+      if ((searchInput.value.length != 0 && fullName.toLowerCase().includes(searchInput.value.toLowerCase())) || searchInput.value.length == 0) {
+         renderListItem(list[i]);
+     } 
    }
  }
    
@@ -129,13 +115,13 @@ header.insertAdjacentHTML('beforeend',
  submit.addEventListener('click', (event) => {
    event.preventDefault();
    simpleSearch(search, data);
-   // Helpful log statement to test function
-   console.log('Submit button is functional!');
  });
  
  /* submit listener keyup */
  search.addEventListener('keyup', () => {
    simpleSearch(search, data);
-   // Helpful log statement to test function
-   console.log('Keyup event on the Search input is functional!');
  });
+
+// Call functions
+showPage(data, 1);
+addPagination(data);
