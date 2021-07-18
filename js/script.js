@@ -1,12 +1,10 @@
 /*
 Treehouse Techdegree:
 FSJS Project 2 - Data Pagination and Filtering
+==============================================
 */
 
-/*
-Create the `showPage` function
-This function will create and insert/append the elements needed to display a "page" of nine students
-*/
+// Declare some global variables and functions.
 let itemsPerPage = 9;
 let studentList = document.querySelector('.student-list');
 let linkList = document.querySelector('.link-list');
@@ -14,6 +12,15 @@ let linkList = document.querySelector('.link-list');
 function clearHtml(element) {
    element.innerHTML = '';
 }
+
+
+/*
+`showPage` function 
+Creates and appends HTML for paginated list of student information.
+@param list (array) The data array to be used.
+@param page (number) The current page number.
+*/
+
 
 function showPage(list, page) {
    let startIndex = page * itemsPerPage - itemsPerPage;
@@ -39,8 +46,9 @@ function showPage(list, page) {
 
 
 /*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
+`addPagination` function
+Creates and appends pagination buttons.
+@param list (array) The data array to be used.
 */
 
 function addPagination(list) {
@@ -58,6 +66,7 @@ function addPagination(list) {
    }
 }
 
+// Click event listener for pagination buttons.
 linkList.addEventListener('click', (e) => {
    if (e.target.type == 'button') {
       document.querySelector('button.active').className = '';
@@ -72,6 +81,11 @@ showPage(data, 1);
 addPagination(data);
 
 
+/*
+Search elements & functions.
+====================
+*/
+
 // Add search bar
 
 let header = document.querySelector('.header');
@@ -84,7 +98,7 @@ header.insertAdjacentHTML('beforeend',
 
 /* 
 `simpleSearch` function
-Builds new array called searchResults and calls showPage on searchResults
+Builds new array called searchResults and calls showPage on searchResults.
 @param searchInput The search input element.
 @param list The data array containing student information.
 */
@@ -111,13 +125,12 @@ function simpleSearch(searchInput, list) {
    } 
 }
 
+// Event listeners for search button and keyup events.
 submit.addEventListener('click', (event) => {
    event.preventDefault();
-   // call simple search on new array
    simpleSearch(search, data);
  });
 
  search.addEventListener('keyup', () => {
-   // call simple search on new array
    simpleSearch(search, data);
  });
