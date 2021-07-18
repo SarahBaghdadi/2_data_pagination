@@ -1,170 +1,67 @@
 /*
 Treehouse Techdegree:
 FSJS Project 2 - Data Pagination and Filtering
-==============================================
 */
 
- /*
-Set global variables.
+/*
+Create the `showPage` function
+This function will create and insert/append the elements needed to display a "page" of nine students
 */
-
-let itemsPer = 9; // How many items per page to show.
-const studentList = document.querySelector('.student-list'); // Ul element containing student data in lis.
-const linkList = document.querySelector('.link-list'); // Ul element containing pagination buttons.
-
- /*
-`clearHtml` function
-Replaces the inner HTML of an element with empty string.
-@param element The HTML element to clear.
-*/
-
-function clearHtml(element) {
-   element.innerHTML = '';
-}
-
- /*
-`renderListItem` function
-Creates and appends the elements needed to display a page of students.
-@param list The data array containing student information.
-@param page The current page number.
-*/
-
-function renderListItem(item) {
-   const picture = item.picture.large;
-   const firstName = item.name.first;
-   const lastName = item.name.last;
-   const email = item.email;
-   const dateJoined = item.registered.date; 
-   studentList.insertAdjacentHTML('beforeend',
-   `<li class="student-item cf">
-      <div class="student-details">
-      <img class="avatar" src="${picture}" alt="Profile Picture">
-      <h3>${firstName} ${lastName}</h3>
-      <span class="email">${email}</span>
-      </div>
-      <div class="joined-details">
-      <span class="date">Joined ${dateJoined}</span>
-      </div>
-   </li>`);
-}
-
- /*
-`showPage` function
-Calls renderListItem on current page containing specified number of items per page.
-@param list The data array containing student information.
-@param page The current page number.
-*/
+let itemsPerPage = 9;
+let studentList = document.querySelector('.student-list');
+let linkList = document.querySelector('.link-list');
 
 function showPage(list, page) {
-   let startIndex = page * itemsPer - itemsPer - 1;
-   let endIndex = page * itemsPer;
-   clearHtml(studentList);
-   for (i=0; i < list.length; i++){
-      if (i > startIndex && i < endIndex){
-         renderListItem(list[i]);
+   let startIndex = page * itemsPerPage - itemsPerPage;
+   let endIndex = page * itemsPerPage;
+   studentList.innerHTML = '';
+   for (let i =0; i < list.length; i++) {
+      if (i >= startIndex && i < endIndex) {
+         let itemContents = 
+         `<li class="student-item cf">
+            <div class="student-details">
+               <img class="avatar" src="${list[i].picture.large}" alt="Profile Picture">
+               <h3>${list[i].name.first} ${list[i].name.last}</h3>
+               <span class="email">${list[i].email}</span>
+            </div>
+            <div class="joined-details">
+               <span class="date">J${list[i].registered.date}</span>
+            </div>
+         </li>`;
+         studentList.insertAdjacentHTML('beforeend', itemContents);
       }
    }
 }
 
+
 /*
-`addPagination` function
-Creates and appends pagination buttons.
-@param list The data array containing student information.
+Create the `addPagination` function
+This function will create and insert/append the elements needed for the pagination buttons
 */
 
 function addPagination(list) {
-   let buttonsQty = Math.ceil(list.length / itemsPer); 
-   clearHtml(linkList);
-   for (i = 0; i < buttonsQty; i++){
-      linkList.insertAdjacentHTML('beforeend', 
-      `
-      <li>
-         <button type="button">${i+1}</button>
-      </li>
-      `)
-   };
+   let buttonsQty = list.length / itemsPerPage;
+   linkList.innerHTML = '';
+   for (let i = 0; i < buttonsQty; i++) {
+      let buttonContents = 
+      `<li>
+         <button type="button">${i + 1}</button>
+      </li>`;
+      linkList.insertAdjacentHTML('beforeend', buttonContents);
+   }
    linkList.firstElementChild.firstElementChild.className = 'active';
- }
-
-/*
-Pagination event listener.
-*/
-
- linkList.addEventListener('click', (e) => {
-    if (e.target.type == 'button') {
-      let buttonRemoveActive = document.querySelector('.active');
-      buttonRemoveActive.className = '';
-      e.target.className = 'active';
-      let buttonInt = e.target.textContent;
-      showPage(data, buttonInt);
-    }
- });
-
-/* 
-Render search bar.
-*/
-
-const header = document.querySelector('header');
-header.insertAdjacentHTML('beforeend', 
-   `
-   <label for="search" class="student-search">
-      <span>Search by name</span>
-      <input id="search" placeholder="Search by name...">
-      <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
-   </label>
-   `
-)
-
-/* 
-`simpleSearch` function
-@param searchInput The search input element.
-@param list The data array containing student information.
-*/
-
-const search = document.querySelector('#search'); // Search input element
-const submit = document.querySelector('.student-search button'); // Search submit button
-
- function simpleSearch(searchInput, list) {
-   clearHtml(studentList);
-   for (let i = 0; i < list.length; i++){
-      let fullName = `${list[i].name.first} ${list[i].name.last}`;
-      let searchParamaters = (searchInput.value.length != 0 && fullName.toLowerCase().includes(searchInput.value.toLowerCase())) || searchInput.value.length == 0;
-      if (searchParamaters) {
-         renderListItem(list[i]);
-      }
-   }
- }
-
- /* 
-`alertNoResults` function
-Renders message if no results.
-*/
-
- function alertNoResults() {   
-   let resultsQty = document.querySelectorAll('li.student-item').length;
-   console.log(resultsQty);
-   if (resultsQty == 0 ) {
-      studentList.innerHTML = `<p>No results found.</p>`;
-   }
 }
-   
- /* 
- event listener for search button click event
- */
- submit.addEventListener('click', (event) => {
-   event.preventDefault();
-   simpleSearch(search, data);
-   alertNoResults();
- });
- 
- /* 
- event listener for search keyup event
- */
- search.addEventListener('keyup', () => {
-   simpleSearch(search, data);
-   alertNoResults();
- });
+
+linkList.addEventListener('click', (e) => {
+   if (e.target.type == 'button') {
+      document.querySelector('button.active').className = '';
+      e.target.className = 'active';
+      let list = data;
+      showPage(list, e.target.textContent);
+   }
+});
 
 // Call functions
 showPage(data, 1);
 addPagination(data);
+
