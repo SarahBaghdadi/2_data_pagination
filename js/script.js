@@ -18,7 +18,7 @@ function clearHtml(element) {
 function showPage(list, page) {
    let startIndex = page * itemsPerPage - itemsPerPage;
    let endIndex = page * itemsPerPage;
-   studentList.innerHTML = '';
+   clearHtml(studentList);
    for (let i =0; i < list.length; i++) {
       if (i >= startIndex && i < endIndex) {
          let itemContents = 
@@ -45,7 +45,7 @@ This function will create and insert/append the elements needed for the paginati
 
 function addPagination(list) {
    let buttonsQty = list.length / itemsPerPage;
-   linkList.innerHTML = '';
+   clearHtml(linkList);
    for (let i = 0; i < buttonsQty; i++) {
       let buttonContents = 
       `<li>
