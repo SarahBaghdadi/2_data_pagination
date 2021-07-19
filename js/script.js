@@ -110,6 +110,7 @@ function simpleSearch(searchInput, list) {
 showPage(data, 1);
 addPagination(data);
 
+
 // Event listener for pagination buttons.
 linkList.addEventListener('click', (e) => {
    if (e.target.type == 'button') {
@@ -128,14 +129,22 @@ linkList.addEventListener('click', (e) => {
 // Event listeners for search button and keyup events.
 submit.addEventListener('click', (e) => {
    e.preventDefault();
-   simpleSearch(search, data);
-   addPagination(searchResults); 
+   if (searchResults.length > 0) {
+      addPagination(searchResults); 
+   } else if (searchResults.length == 0 && search.value.length > 0 ){
+      console.log('case 2');
+      clearHtml(linkList);
+   } else {
+      addPagination(data);
  });
 
  search.addEventListener('keyup', () => {
    simpleSearch(search, data);
    if (searchResults.length > 0) {
       addPagination(searchResults); 
+   } else if (searchResults.length == 0 && search.value.length > 0 ){
+      console.log('case 2');
+      clearHtml(linkList);
    } else {
       addPagination(data);
    }
