@@ -127,25 +127,22 @@ linkList.addEventListener('click', (e) => {
 
 
 // Event listeners for search button and keyup events.
-submit.addEventListener('click', (e) => {
-   e.preventDefault();
+const searchEventLogic = () => {
    if (searchResults.length > 0) {
       addPagination(searchResults); 
    } else if (searchResults.length == 0 && search.value.length > 0 ){
-      console.log('case 2');
-      clearHtml(linkList);
-   } else {
-      addPagination(data);
- });
-
- search.addEventListener('keyup', () => {
-   simpleSearch(search, data);
-   if (searchResults.length > 0) {
-      addPagination(searchResults); 
-   } else if (searchResults.length == 0 && search.value.length > 0 ){
-      console.log('case 2');
       clearHtml(linkList);
    } else {
       addPagination(data);
    }
+};
+
+submit.addEventListener('click', (e) => {
+   e.preventDefault();
+   searchEventLogic();
+ });
+
+ search.addEventListener('keyup', () => {
+   simpleSearch(search, data);
+   searchEventLogic();
  });
